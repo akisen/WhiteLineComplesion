@@ -17,7 +17,7 @@ import PIL
 import datetime
 tf.enable_eager_execution()
 sys.setrecursionlimit(10000)
-def image_show(data, name, cmap=None):
+def image_show(data, name, args, cmap=None):
     """Show an image."""
     #print(type(data))
     plt.figure()
@@ -25,7 +25,9 @@ def image_show(data, name, cmap=None):
     #plt.title(name)
     plt.grid(False)
     plt.axis('off')
-    plt.savefig('figure/figure{0:%Y%m%d%H%M%S}.jpg'.format(datetime.datetime.now()))
+    path = args[2] +'/figure{0:%Y%m%d%H%M%S}.jpg'.format(datetime.datetime.now()) 
+    print(path)
+    plt.savefig(path)
     #plt.show()
 
 if __name__ == "__main__":
@@ -33,14 +35,17 @@ if __name__ == "__main__":
     FILENAME="F:/waymo-dataset/training_0000/segment-10206293520369375008_2796_800_2816_800_with_camera_labels.tfrecord"
     FILES = "F:/waymo-dataset/"+args[1]+"/*.tfrecord"
     print(glob.glob(FILES))
-    dataset =tf.data.TFRecordDataset(FILENAME)
+    
     frames = []
-    print(dataset)
-    for data in dataset:
-        frame = open_dataset.Frame()
-        frame.ParseFromString(bytearray(data.numpy()))
-        frames.append(frame)
-    print(len(frames))
-    frame = frames[100]
-    for index,frame in enumerate(frames):
-      image_show(frame.images[0].image,index)
+    #print(dataset)
+    for FILE in FILES:
+      dataset =tf.data.TFRecordDataset(FILENAME)
+      frames = []
+      for data in dataset:
+          frame = open_dataset.Frame()
+          frame.ParseFromString(bytearray(data.numpy()))
+          frames.append(frame)
+      print(len(frames))
+      frame = frames[100]
+      for index,frame in enumerate(frames):
+        image_show(frame.images[0].image,index,args)
