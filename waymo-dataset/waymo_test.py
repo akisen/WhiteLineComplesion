@@ -12,6 +12,9 @@ import matplotlib.pyplot as plt
 from waymo_open_dataset.utils import range_image_utils
 from waymo_open_dataset.utils import transform_utils
 from waymo_open_dataset import dataset_pb2 as open_dataset
+import glob
+import PIL
+import datetime
 tf.enable_eager_execution()
 sys.setrecursionlimit(10000)
 def image_show(data, name, cmap=None):
@@ -22,11 +25,14 @@ def image_show(data, name, cmap=None):
     #plt.title(name)
     plt.grid(False)
     plt.axis('off')
-    plt.savefig("figure/figure{}.png".format(index))
+    plt.savefig('figure/figure{0:%Y%m%d%H%M%S}.jpg'.format(datetime.datetime.now()))
     #plt.show()
 
 if __name__ == "__main__":
-    FILENAME = "F:\waymo-dataset\segment-10206293520369375008_2796_800_2816_800_with_camera_labels.tfrecord"
+    args =sys.argv
+    FILENAME="F:/waymo-dataset/training_0000/segment-10206293520369375008_2796_800_2816_800_with_camera_labels.tfrecord"
+    FILES = "F:/waymo-dataset/"+args[1]+"/*.tfrecord"
+    print(glob.glob(FILES))
     dataset =tf.data.TFRecordDataset(FILENAME)
     frames = []
     print(dataset)
