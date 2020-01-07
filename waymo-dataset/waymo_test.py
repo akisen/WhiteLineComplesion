@@ -1,20 +1,18 @@
 """
 TF2.0系で積極実行した場合のみTFreordのイテレーションが可能なのでこのコードを実行する場合は2.0系で実行する
 """
+"""
+第一引数 
+"""
 import sys
-import os
-import imp
 import tensorflow as tf
-import math
-import numpy as np
-import itertools
 import matplotlib.pyplot as plt
 from waymo_open_dataset.utils import range_image_utils
 from waymo_open_dataset.utils import transform_utils
 from waymo_open_dataset import dataset_pb2 as open_dataset
 import glob
-import PIL
 import datetime
+import gc
 tf.enable_eager_execution()
 sys.setrecursionlimit(10000)
 def image_show(data, name, args, cmap=None):
@@ -34,18 +32,23 @@ if __name__ == "__main__":
     args =sys.argv
     FILENAME="F:/waymo-dataset/training_0000/segment-10206293520369375008_2796_800_2816_800_with_camera_labels.tfrecord"
     FILES = "F:/waymo-dataset/"+args[1]+"/*.tfrecord"
-    print(glob.glob(FILES))
-    
+    FILES.replace("\\","/")
+    #print(glob.glob(FILES))
+    print(FILES)
     frames = []
     #print(dataset)
-    for FILE in FILES:
-      dataset =tf.data.TFRecordDataset(FILENAME)
+   
+    for FILE in glob.glob(FILES):
+      print(FILE)
+      dataset = tf.data.TFRecordDataset(FILE)
       frames = []
       for data in dataset:
           frame = open_dataset.Frame()
           frame.ParseFromString(bytearray(data.numpy()))
           frames.append(frame)
-      print(len(frames))
-      frame = frames[100]
+            
       for index,frame in enumerate(frames):
         image_show(frame.images[0].image,index,args)
+      del dataset
+      del frames
+      gc.collect()
