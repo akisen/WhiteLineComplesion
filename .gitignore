@@ -7,3 +7,4 @@ pylintrc
 *.jpg
 *.png
 waymo-od
+*.DESKTOP-VI6I486

@@ -13,16 +13,18 @@ from waymo_open_dataset.utils import transform_utils
 from waymo_open_dataset import dataset_pb2 as open_dataset
 tf.enable_eager_execution()
 def image_show(data, name, layout, cmap=None):
-  """Show an image."""
-  #print(type(data))
-  plt.subplot(*layout)
-  plt.imshow(tf.image.decode_jpeg(data), cmap=cmap)
-  plt.title(name)
-  plt.grid(False)
-  plt.axis('off')
+    """Show an image."""
+    #print(type(data))
+    fig = plt.figure()
+    plt.subplot(*layout)
+    plt.imshow(tf.image.decode_jpeg(data), cmap=cmap)
+    plt.title(name)
+    plt.grid(False)
+    plt.axis('off')
+    plt.show()
 
 if __name__ == "__main__":
-    FILENAME = "C:/Users/Akito/Desktop/waymo/segment-10241508783381919015_2889_360_2909_360_with_camera_labels.tfrecord"
+    FILENAME = "F:\waymo-dataset\segment-10206293520369375008_2796_800_2816_800_with_camera_labels.tfrecord"
     dataset =tf.data.TFRecordDataset(FILENAME)
     frames = []
     print(dataset)
@@ -34,4 +36,5 @@ if __name__ == "__main__":
     plt.figure(figsize=(25, 20))
     frame = frames[100]
     for index, image in enumerate(frame.images):
-        image_show(image.image, open_dataset.CameraName.Name.Name(image.name),[3, 2, index+1])
+       for index,frame in enumerate(frames):
+          image_show(frame.images[0].image, open_dataset.CameraName.Name.Name(frame.images[0].name)+str(index),[10,20,index+1])
