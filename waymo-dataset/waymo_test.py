@@ -18,7 +18,7 @@ sys.setrecursionlimit(10000)
 def image_show(data, name, args, cmap=None):
     """Show an image."""
     #print(type(data))
-    plt.figure()
+    fig=plt.figure()
     plt.imshow(tf.image.decode_jpeg(data), cmap=cmap)
     #plt.title(name)
     plt.grid(False)
@@ -26,15 +26,17 @@ def image_show(data, name, args, cmap=None):
     path = args[2] +'/figure{0:%Y%m%d%H%M%S}.jpg'.format(datetime.datetime.now()) 
     print(path)
     plt.savefig(path)
+    plt.close(fig)
     #plt.show()
 
 if __name__ == "__main__":
     args =sys.argv
-    FILENAME="F:/waymo-dataset/training_0000/segment-10206293520369375008_2796_800_2816_800_with_camera_labels.tfrecord"
-    FILES = "F:/waymo-dataset/"+args[1]+"/*.tfrecord"
+    #FILENAME="F:/waymo-dataset/training_0000/segment-10206293520369375008_2796_800_2816_800_with_camera_labels.tfrecord"
+    #FILES = "F:/waymo-dataset/"+args[1]+"/*.tfrecord"
+    FILES = "C:/Users/Akito/Desktop/waymo/"+args[1]+"/*.tfrecord"
     FILES.replace("\\","/")
     #print(glob.glob(FILES))
-    print(FILES)
+    #print(FILES)
     frames = []
     #print(dataset)
    
