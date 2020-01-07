@@ -1,0 +1,9 @@
+*.pyc
+*.h5
+*.v2
+*.DESKTOP-ONR7LPS
+*.DESKTOP-701BD4K
+pylintrc
+*.jpg
+*.png
+waymo-od
