@@ -13,6 +13,7 @@ from waymo_open_dataset import dataset_pb2 as open_dataset
 import glob
 import datetime
 import gc
+import time
 tf.enable_eager_execution()
 sys.setrecursionlimit(10000)
 def image_show(data, name, args, cmap=None):
@@ -24,7 +25,7 @@ def image_show(data, name, args, cmap=None):
     plt.grid(False)
     plt.axis('off')
     path = args[2] +'/figure{0:%Y%m%d%H%M%S}.jpg'.format(datetime.datetime.now()) 
-    print(path)
+    #print(path)
     plt.savefig(path)
     plt.close(fig)
     #plt.show()
@@ -32,16 +33,17 @@ def image_show(data, name, args, cmap=None):
 if __name__ == "__main__":
     args =sys.argv
     #FILENAME="F:/waymo-dataset/training_0000/segment-10206293520369375008_2796_800_2816_800_with_camera_labels.tfrecord"
-    #FILES = "F:/waymo-dataset/"+args[1]+"/*.tfrecord"
-    FILES = "C:/Users/Akito/Desktop/waymo/"+args[1]+"/*.tfrecord"
+    FILES = "F:/waymo-dataset/"+args[1]+"/*.tfrecord"
+    #FILES = "C:/Users/Akito/Desktop/waymo/"+args[1]+"/*.tfrecord"
     FILES.replace("\\","/")
     #print(glob.glob(FILES))
     #print(FILES)
     frames = []
     #print(dataset)
    
-    for FILE in glob.glob(FILES):
+    for i,FILE in enumerate(glob.glob(FILES)):
       print(FILE)
+      start=time.time()
       dataset = tf.data.TFRecordDataset(FILE)
       frames = []
       for data in dataset:
@@ -54,3 +56,7 @@ if __name__ == "__main__":
       del dataset
       del frames
       gc.collect()
+      elapsed_time =time.time()-start
+      print ("elapsed_time:{0}".format(elapsed_time) + "[sec]\n")
+      print(str(i+1)+"/25")
+      
