@@ -100,8 +100,8 @@ class DataGenerator:
         # windowの枠の範囲内で乱数を生成し、その領域をマスクする
         # ここの変数をいじってマスクの位置を白線が頻出する領域に絞りたい
         if self.random_hole:
-            y1 = random.randint(y1, y2 - self.config.mask_size - 1)
-            x1 = random.randint(x1, x2 - self.config.mask_size - 1)
+            y1 = 0
+            x1 = 0
         else:
             y1 = y1 + (y2 - y1) // 4
             x1 = x1 + (x2 - x1) // 4
@@ -112,11 +112,13 @@ class DataGenerator:
         # マスク領域内の穴（マスクビットを立てる領域）
         # マスクされる候補の領域を決定→実際にマスクする領域を決定の流れ。
         # ここからでは実際にマスクされる領域を決定する
+        # h,w:マスク領域の大きさ
+        # px1,py1:マスク領域の開始地点の座標
         if self.random_hole:
-            h, w = np.random.randint(self.config.hole_min,
-                                     self.config.hole_max + 1, 2)
-            py1 = y1 + np.random.randint(0, self.config.mask_size - h)
-            px1 = x1 + np.random.randint(0, self.config.mask_size - w)
+            
+            h, w = (80,80)
+            py1 = y1
+            px1 = x1 
         else:
             h, w = self.config.hole_max, self.config.hole_max
             py1 = y1 + (self.config.mask_size - h) // 2
