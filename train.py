@@ -12,6 +12,7 @@ from network import GLCIC
 from config import Config
 import dataset
 import matplotlib.pyplot as plt
+import datetime
 # tf.enable_eager_execution()
 class PrintAccuracy(keras.callbacks.Callback):
     """PrintAccuracy
@@ -56,8 +57,10 @@ class SaveGeneratorOutput(keras.callbacks.Callback):
             if len(output.shape) == 4 and output.shape[3] == 3:
                 # おそらく画像 
                 # Probably image
+                #print("koko")
                 output = np.split(output, output.shape[0], axis=0)
                 for i, image in enumerate(output):
+                    #print("here")
                     image = np.squeeze(image, 0)
                     image = self.data_generator.denormalize_image(image)
                     cv2.imwrite('./out/epoch{}_{}.png'.format(epoch, i), image)
@@ -90,7 +93,7 @@ argparser.add_argument('--testimage_path', type=str,
 args = argparser.parse_args()
 logger.info("args: %s", args)
 
-config.batch_size = 2
+config.batch_size = 16
 
 network = GLCIC(batch_size=config.batch_size, input_shape=config.input_shape,mask_shape=config.mask_shape)
 
@@ -153,6 +156,7 @@ plt.plot(epochs, loss, 'bo', label='Training loss')
 plt.plot(epochs, val_loss, 'b', label='Validation loss')
 plt.title('Training and validation loss')
 plt.legend()
+plt.savefig("stage{}_{0:%Y%m%d%H%M%S}.png".format(args.stage,datetime.datetime.now()))
 plt.show()
 model_file_path = './nnmodel/glcic-latest-stage{}.h5'.format(args.stage)
 model.save_weights(model_file_path)

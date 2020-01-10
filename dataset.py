@@ -100,8 +100,8 @@ class DataGenerator:
         # windowの枠の範囲内で乱数を生成し、その領域をマスクする
         # ここの変数をいじってマスクの位置を白線が頻出する領域に絞りたい
         if self.random_hole:
-            y1 = 0
-            x1 = 0
+            y1 = 150
+            x1 = 150
         else:
             y1 = y1 + (y2 - y1) // 4
             x1 = x1 + (x2 - x1) // 4
@@ -116,7 +116,7 @@ class DataGenerator:
         # px1,py1:マスク領域の開始地点の座標
         if self.random_hole:
             
-            h, w = (80,80)
+            h, w = (50,35)
             py1 = y1
             px1 = x1 
         else:
